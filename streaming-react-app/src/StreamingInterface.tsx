@@ -769,9 +769,9 @@ export default function StreamingInterface() {
                   Check out the seamless_communication <a target="_blank" rel="noopener noreferrer" href="https://github.com/facebookresearch/seamless_communication/tree/main">README</a> for more information.
                   <br/>
                   SeamlessStreaming model is a research model and is not released
-                  for production deployment. The streaming quality is closely
-                  related to proper VAD segmentation. It works best if you pause
-                  every couple of sentences, or you may wish adjust the VAD threshold
+                  for production deployment. It is important to use a microphone with 
+                  noise cancellation (for e.g. a smartphone), otherwise you may see model hallucination on noises. 
+                  It works best if you pause every couple of sentences, or you may wish adjust the VAD threshold
                   in the model config. The real-time performance will degrade
                   if you try streaming multiple speakers at the same time.
                 </Typography>
