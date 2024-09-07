@@ -79,6 +79,7 @@ COPY --chown=user:user ./seamless_server ./seamless_server
 RUN cd seamless_server && \
     pip install fairseq2 --pre --extra-index-url https://fair.pkg.atmeta.com/fairseq2/whl/nightly/pt2.1.1/cu118 && \
     pip install --no-cache-dir --upgrade -r requirements.txt
+RUN python -c "import nltk; nltk.download('averaged_perceptron_tagger')"
 COPY --from=frontend /app/dist ./streaming-react-app/dist
 
 WORKDIR $HOME/app/seamless_server
