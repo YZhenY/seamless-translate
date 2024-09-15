@@ -17,7 +17,9 @@ from starlette.routing import Mount, Route
 from starlette.staticfiles import StaticFiles
 
 import time
-from fastapi import Request
+from fastapi import FastAPI,Request
+
+app = FastAPI()
 
 @app.middleware("http")
 async def add_process_time_header(request: Request, call_next):
