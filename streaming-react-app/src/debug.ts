@@ -26,6 +26,8 @@ type DebugTimings = {
   startRenderTextTime: number | null;
   startRecordingTime: number | null;
   receivedAudioSampleRate: number | null;
+  componentRenderTimes: {[key: string]: number[]};
+  apiCallTimes: {[key: string]: number[]};
 };
 
 function getInitialTimings(): DebugTimings {
@@ -38,6 +40,8 @@ function getInitialTimings(): DebugTimings {
     startRenderTextTime: null,
     startRecordingTime: null,
     receivedAudioSampleRate: null,
+    componentRenderTimes: {},
+    apiCallTimes: {},
   };
 }
 
@@ -247,6 +251,20 @@ class DebugTimingsManager {
     // Play for debugging
     // playAudioBuffer(incomingArrayBuffer);
     downloadAudioBuffer(incomingArrayBuffer, 'output_audio.wav');
+  }
+
+  measureComponentRender(componentName: string, renderTime: number) {
+    if (!this.timings.componentRenderTimes[componentName]) {
+      this.timings.componentRenderTimes[componentName] = [];
+    }
+    this.timings.componentRenderTimes[componentName].push(renderTime);
+  }
+
+  measureApiCall(apiName: string, callTime: number) {
+    if (!this.timings.apiCallTimes[apiName]) {
+      this.timings.apiCallTimes[apiName] = [];
+    }
+    this.timings.apiCallTimes[apiName].push(callTime);
   }
 }
 

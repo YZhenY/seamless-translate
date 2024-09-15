@@ -61,6 +61,7 @@ import Switch from '@mui/material/Switch';
 import Grid from '@mui/material/Grid';
 import {getLanguageFromThreeLetterCode} from './languageLookup';
 import HeadphonesIcon from '@mui/icons-material/Headphones';
+import { useRenderTime } from './hooks/useRenderTime';
 
 const AUDIO_STREAM_DEFAULTS = {
   userMedia: {
@@ -121,6 +122,7 @@ const MAX_SERVER_EXCEPTIONS_TRACKED = 500;
 export const TYPING_ANIMATION_DELAY_MS = 6;
 
 export default function StreamingInterface() {
+  useRenderTime('StreamingInterface');
   const urlParams = getURLParams();
   const debugParam = urlParams.debug;
   const [animateTextDisplay, setAnimateTextDisplay] = useState<boolean>(
@@ -308,7 +310,7 @@ export default function StreamingInterface() {
 
       console.log('[configureStreamAsync] sending config', config);
 
-      socket.emit('configure_stream', config, (statusObject) => {
+      socket.on('configure_stream', config, (statusObject) => {
         setHasMaxSpeakers(statusObject.message === 'max_speakers')
         if (statusObject.status === 'ok') {
           isStreamConfiguredRef.current = true;
@@ -407,7 +409,10 @@ export default function StreamingInterface() {
       } else {
         const float32Audio = event.inputBuffer.getChannelData(0);
         const pcm16Audio = float32To16BitPCM(float32Audio);
+        const apiCallStart = performance.now();
         socket.emit('incoming_audio', pcm16Audio);
+        const apiCallTime = performance.now() - apiCallStart;
+        debug()?.measureApiCall('incoming_audio', apiCallTime);
       }
 
       debug()?.sentAudio(event);

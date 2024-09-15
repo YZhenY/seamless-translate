@@ -20,6 +20,16 @@ export default function DebugChart() {
     },
   };
 
+  const renderTimeData = Object.entries(debug()?.timings.componentRenderTimes || {}).map(([component, times]) => [
+    component,
+    times.reduce((a, b) => a + b, 0) / times.length
+  ]);
+
+  const apiCallTimeData = Object.entries(debug()?.timings.apiCallTimes || {}).map(([api, times]) => [
+    api,
+    times.reduce((a, b) => a + b, 0) / times.length
+  ]);
+
   return (
     <div className="horizontal-padding-sra text-chunk-sra">
       <Accordion
@@ -41,6 +51,20 @@ export default function DebugChart() {
                 width="100%"
                 height="400px"
                 options={options}
+              />
+              <Chart
+                chartType="BarChart"
+                width="100%"
+                height="300px"
+                data={[['Component', 'Average Render Time (ms)'], ...renderTimeData]}
+                options={{title: 'Component Render Times'}}
+              />
+              <Chart
+                chartType="BarChart"
+                width="100%"
+                height="300px"
+                data={[['API Call', 'Average Call Time (ms)'], ...apiCallTimeData]}
+                options={{title: 'API Call Times'}}
               />
               <Button
                 variant="contained"
