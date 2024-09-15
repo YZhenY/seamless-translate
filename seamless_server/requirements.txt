@@ -28,3 +28,4 @@ starlette==0.32.0.post1
 hf_transfer==0.1.4
 huggingface_hub==0.19.4
 nltk==3.8.1
+fastapi
